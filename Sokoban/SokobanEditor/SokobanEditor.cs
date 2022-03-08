@@ -22,7 +22,9 @@ namespace SokobanEditor
 
         private void SokobanEditor_Load(object sender, EventArgs e)
         {
-
+            Cell[,] cell;
+            LevelFile level = new LevelFile("levels.txt");
+            cell = level.LoadLevel(2);
         }
     }
 }

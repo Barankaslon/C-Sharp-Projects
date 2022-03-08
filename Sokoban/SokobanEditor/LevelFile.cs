@@ -29,7 +29,34 @@ namespace SokobanEditor
                 return cell;
             }
 
+            int curr = 0;
+            int curr_level_nr;
+            int width;
+            int height;
 
+            while (curr < lines.Length)
+            {
+
+                ReadLevelHeader(lines[curr], out curr_level_nr, out width, out height);
+
+                if (level_nr == curr_level_nr)
+                {
+                    cell = new Cell[width, height];
+                    for (int y = 0; y < height; y++)
+                    {
+                        for(int x = 0; x < width; x++)
+                        {
+                            cell[x, y] = CharToCell(lines[curr + 1 + y][x]);
+                        }
+                    }
+
+                    break;
+                }
+                else
+                {
+                    curr = curr + 1 + height;
+                }
+            }
 
             return cell; 
         }
@@ -50,6 +77,34 @@ namespace SokobanEditor
         public void SaveLevel(int level_nr, int x, int y)
         {
 
+        }
+
+        public Cell CharToCell (char x)
+        {
+            switch(x)
+            {
+                case ' ': return Cell.none;
+                case '#': return Cell.wall;
+                case 'O': return Cell.abox;
+                case '.': return Cell.here;
+                case 'C': return Cell.done;
+                case '1': return Cell.player;
+                default: return Cell.none;
+            }
+        }
+
+        public char CellToChar(Cell c)
+        {
+            switch (c)
+            {
+                case Cell.none: return ' ';
+                case Cell.wall: return '#';
+                case Cell.abox: return 'O';
+                case Cell.here: return '.';
+                case Cell.done: return 'C';
+                case Cell.player: return '1';
+                default: return ' ';
+            }
         }
 
     }
